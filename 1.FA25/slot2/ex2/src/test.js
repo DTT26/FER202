@@ -40,3 +40,7 @@ console.log('Danh sách age > 20:');
 over20.forEach(person => {
     console.log(`id: ${person.id}, name: ${person.name}, age: ${person.age}`);
 });
+
+// Tính tổng số tuổi các person trong list
+const totalAge = people.reduce((sum, person) => sum + person.age, 0);
+console.log('Tổng số tuổi các person:', totalAge);
