@@ -10,5 +10,11 @@ const companies = [
   { name: "Company Nine", category: "Retail", start: 1981, end: 1989 }
 ];
 
-const sorted = [...companies].sort((a, b) => a.end - b.end);
-sorted.slice(0, 3).forEach(c => console.log(`${c.name} - ${c.end}`));
+// const sorted = [...companies].sort((a, b) => a.end - b.end);
+// sorted.slice(0, 3).forEach(c => console.log(`${c.name} - ${c.end}`));
+
+const techCompanies = companies.filter(c => c.category === 'Technology');
+console.log(techCompanies);
+
+const sortedByStart = [...companies].sort((a, b) => a.start - b.start);
+console.log(sortedByStart);
