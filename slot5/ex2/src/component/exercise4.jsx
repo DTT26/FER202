@@ -20,6 +20,15 @@ export default function Exercise4() {
         <strong>Rest Ages:</strong>{" "}
         {restAges.length ? restAges.join(", ") : "[]"}
       </p>
+      <ul>
+        <map name="restAge">
+         {restAges.map((age, index) => (
+          <li key={index}>
+            Phần tử thứ {index}: {age}
+          </li>
+        ))} 
+        </map>
+      </ul>
       <hr></hr>
     </div>
   );
