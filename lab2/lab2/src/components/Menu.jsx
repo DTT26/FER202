@@ -4,6 +4,7 @@ import option2 from '../images/option2.png';
 import option3 from '../images/option3.png';
 import option4 from '../images/option4.png';
 
+
 export default function Menu() {
   const pizzas = [
     {
@@ -69,7 +70,7 @@ export default function Menu() {
                     <span className="text-dark fw-bold fs-4">{pizza.price}</span>
                   )}
                 </div>
-                <button className="btn btn-dark w-100">Buy</button>
+                <button class="btn btn-success">Buy</button>
               </div>
             </div>
           </div>

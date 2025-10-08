@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import banner from '../images/banner.png';
 import banner1 from '../images/banner1.png';
 import banner2 from '../images/banner2.png';
@@ -35,6 +35,14 @@ export default function Banner() {
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [slides.length]);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
