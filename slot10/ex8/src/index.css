@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Layout + visuals for Exercise 8 */
+.exercise-container { max-width: 640px; margin: 18px auto; }
+.top-alert { background: #fff3cd; border-radius: 6px; padding: 8px 12px; margin-bottom: 12px; border:1px solid #ffeeba }
+.form-card { border: 1px solid #ddd; padding: 18px; border-radius: 4px; background:#fff }
+.form-title { font-size: 34px; margin-bottom: 12px; font-weight:700 }
+.dashed-highlight { display:none }
+.help-text { color:#9aa0a6; font-size:12px; margin-top:6px }
+.submit-btn { background: linear-gradient(180deg,#1e90ff,#007bff); border: none; color:#fff; border-radius:6px; padding:10px 14px; font-weight:600 }
+.submit-btn:focus { box-shadow:none }
+.input-suffix { min-width:60px; display:flex; align-items:center; justify-content:center }
+.form-label-compact { font-size:14px; font-weight:600; margin-bottom:6px }
