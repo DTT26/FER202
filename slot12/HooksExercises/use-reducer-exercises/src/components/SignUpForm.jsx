@@ -1,5 +1,7 @@
 import React, { useReducer, useMemo } from 'react';
-import { Form, Button, Card, Container, Row, Col, Modal, Toast } from 'react-bootstrap';
+import { Form, Button, Card, Container, Row, Col } from 'react-bootstrap';
+import { useToast } from './ToastMessage';
+import ConfirmModal from './ConfirmModal';
 
 // Regex helpers
 const isEmail = (v) => /\S+@\S+\.[A-Za-z]{2,}/.test(v);
@@ -97,12 +99,20 @@ function SignUpForm() {
     });
     dispatch({ type: 'SET_ERRORS', errors: newErrors });
     if (Object.keys(newErrors).length === 0) {
-      dispatch({ type: 'SHOW_TOAST', value: true });
+      // open confirm modal; toast will be shown when user confirms
       dispatch({ type: 'SHOW_MODAL', value: true });
     }
   };
 
   const handleCancel = () => {
+    dispatch({ type: 'RESET' });
+  };
+
+  const { showSuccess } = useToast();
+
+  const handleConfirm = () => {
+    showSuccess('Submitted successfully!');
+    dispatch({ type: 'SHOW_MODAL', value: false });
     dispatch({ type: 'RESET' });
   };
 
@@ -190,40 +200,23 @@ function SignUpForm() {
         </Col>
       </Row>
 
-      {/* Toast */}
-      <Toast
-        show={ui.showToast}
-        onClose={() => dispatch({ type: 'SHOW_TOAST', value: false })}
-        delay={2000}
-        autohide
-        style={{ position: 'fixed', top: 20, right: 20, minWidth: 220, zIndex: 9999 }}
-      >
-        <Toast.Header>
-          <strong className="me-auto text-success">Success</strong>
-        </Toast.Header>
-        <Toast.Body>Submitted successfully!</Toast.Body>
-      </Toast>
+      {/* toast now provided by ToastProvider */}
 
-      {/* Modal */}
-      <Modal show={ui.showModal} onHide={handleCancel} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Sign Up Info</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Card>
-            <Card.Body>
-              <p><strong>Username:</strong> {form.username}</p>
-              <p><strong>Email:</strong> {form.email}</p>
-              <p><strong>Password:</strong> {form.password}</p>
-            </Card.Body>
-          </Card>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCancel}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      {/* Confirm modal (shows details and requires confirmation) */}
+      <ConfirmModal
+        show={ui.showModal}
+        onHide={() => dispatch({ type: 'SHOW_MODAL', value: false })}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+        title="Sign Up Info"
+        message={`Username: ${form.username}\nEmail: ${form.email}`}
+        type="success"
+        confirmText="Confirm"
+        cancelText="Cancel"
+        showCancel={true}x
+        confirmVariant="primary"
+        cancelVariant="secondary"
+      />
     </Container>
   );
 }

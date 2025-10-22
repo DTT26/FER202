@@ -1,10 +1,12 @@
 import React, { useReducer } from 'react';
-import { Form, Button, Card, Container, Row, Col, Modal } from 'react-bootstrap';
+import { Form, Button, Card, Container, Row, Col } from 'react-bootstrap';
+import { useToast } from './ToastMessage';
+import ConfirmModal from './ConfirmModal';
 
-const initialState = {
+  const initialState = {
   user: { username: '', password: '' },
   errors: {},
-  showModal: false,
+  showModal: false, // controls confirm modal visibility
 };
 
 function reducer(state, action) {
@@ -30,6 +32,7 @@ function reducer(state, action) {
 function LoginFormReducer() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { user, errors, showModal } = state;
+  const { showSuccess } = useToast();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -52,11 +55,18 @@ function LoginFormReducer() {
     dispatch({ type: 'SET_ERRORS', errors: newErrors });
 
     if (Object.keys(newErrors).length === 0) {
+      // open the confirm modal; toast shown when user confirms
       dispatch({ type: 'SHOW_MODAL', value: true });
     }
   };
 
   const handleCloseModal = () => {
+    dispatch({ type: 'SHOW_MODAL', value: false });
+  };
+
+  const handleConfirm = () => {
+    // user confirmed — show toast and reset form
+    showSuccess(`Welcome ${user.username}`);
     dispatch({ type: 'SHOW_MODAL', value: false });
     dispatch({ type: 'RESET' });
   };
@@ -110,21 +120,19 @@ function LoginFormReducer() {
         </Col>
       </Row>
 
-      <Modal show={showModal} onHide={handleCloseModal} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Đăng Nhập Thành Công</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p className="text-success text-center">
-            Chào mừng, <strong>{user.username}</strong>!
-          </p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="success" onClick={handleCloseModal}>
-            Đóng
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <ConfirmModal
+        show={showModal}
+        onHide={handleCloseModal}
+        onConfirm={handleConfirm}
+        onCancel={handleCloseModal}
+        title="Đăng Nhập Thành Công"
+        message={`Chào mừng, ${user.username}!`}
+        type="success"
+        confirmText="OK"
+        cancelText="Cancel"
+        showCancel={false}
+        confirmVariant="success"
+      />
     </Container>
   );
 }
