@@ -6,6 +6,7 @@ export const initialMovieState = {
   currentMovie: { avatar: '', title: '', description: '', genreId: '', duration: '', year: '', country: '' },
   showEditModal: false,
   showDeleteModal: false,
+  showViewDetail: false,
   movieToDelete: null,
 };
 
@@ -54,6 +55,20 @@ export const movieReducer = (state, action) => {
         ...state,
         movieToDelete: null,
         showDeleteModal: false,
+      };
+
+    case 'OPEN_VIEW_DETAIL':
+      return {
+        ...state,
+        currentMovie: action.payload,
+        showViewDetail: true,
+      };
+
+    case 'CLOSE_VIEW_DETAIL':
+      return {
+        ...state,
+        currentMovie: initialMovieState.currentMovie,
+        showViewDetail: false,
       };
 
     case 'RESET_FORM':

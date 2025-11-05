@@ -1,11 +1,13 @@
 import React from 'react';
 import { Table, Button, Image, Modal, Alert, Spinner } from 'react-bootstrap';
 import { useMovieState, useMovieDispatch } from '../contexts/MovieContext';
+import { useAuthState } from '../contexts/AuthContext';
 
 const MovieTable = () => {
   const state = useMovieState();
   const { dispatch, confirmDelete } = useMovieDispatch();
-  const { movies, genres, loading, movieToDelete, showDeleteModal } = state;
+  const { movies, genres, loading, movieToDelete, showDeleteModal, showViewDetail, currentMovie } = state;
+  const { user } = useAuthState();
 
   const genreMap = genres.reduce((map, genre) => {
     map[genre.id] = genre.name;
@@ -18,6 +20,10 @@ const MovieTable = () => {
 
   const handleDeleteClick = (movie) => {
     dispatch({ type: 'OPEN_DELETE_MODAL', payload: movie });
+  };
+
+  const handleViewClick = (movie) => {
+    dispatch({ type: 'OPEN_VIEW_DETAIL', payload: movie });
   };
 
   return (
@@ -54,8 +60,13 @@ const MovieTable = () => {
                   <td>{genreName}</td>
                   <td>{movie.duration} phút</td>
                   <td>
-                    <Button variant="primary" size="sm" onClick={() => handleEditClick(movie)} className="me-2">Sửa</Button>
-                    <Button variant="danger" size="sm" onClick={() => handleDeleteClick(movie)}>Xóa</Button>
+                    {user?.role === 'admin' ? (
+                      <>
+                        <Button variant="primary" size="sm" onClick={() => handleEditClick(movie)} className="me-2">Sửa</Button>
+                        <Button variant="danger" size="sm" onClick={() => handleDeleteClick(movie)} className="me-2">Xóa</Button>
+                      </>
+                    ) : null}
+                    <Button variant="info" size="sm" onClick={() => handleViewClick(movie)} className="me-2">Xem</Button>
                   </td>
                 </tr>
               );
@@ -78,6 +89,32 @@ const MovieTable = () => {
           <Button variant="danger" onClick={() => confirmDelete(movieToDelete.id)}>
             Xác nhận Xóa
           </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showViewDetail} onHide={() => dispatch({ type: 'CLOSE_VIEW_DETAIL' })} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Chi tiết phim</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {currentMovie ? (
+            <div className="d-flex gap-3">
+              <Image src={currentMovie.avatar} alt={currentMovie.title} rounded style={{ width: 160, height: 220, objectFit: 'cover' }} />
+              <div>
+                <h4>{currentMovie.title} <small className="text-muted">({currentMovie.year})</small></h4>
+                <p><strong>Danh mục:</strong> {genres.find(g => g.id === currentMovie.genreId)?.name || 'Unknown'}</p>
+                <p><strong>Thời lượng:</strong> {currentMovie.duration} phút</p>
+                {currentMovie.description && <p><strong>Mô tả:</strong> {currentMovie.description}</p>}
+                {currentMovie.director && <p><strong>Đạo diễn:</strong> {currentMovie.director}</p>}
+                {currentMovie.cast && <p><strong>Diễn viên:</strong> {currentMovie.cast}</p>}
+              </div>
+            </div>
+          ) : (
+            <p>Không có dữ liệu phim.</p>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => dispatch({ type: 'CLOSE_VIEW_DETAIL' })}>Đóng</Button>
         </Modal.Footer>
       </Modal>
     </>

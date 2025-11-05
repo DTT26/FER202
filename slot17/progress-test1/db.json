@@ -1,0 +1,58 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "nam123",
+      "password": "123456",
+      "fullName": "Nguyễn Văn Nam"
+    },
+    {
+      "id": "2",
+      "username": "hainguyen",
+      "password": "123456",
+      "fullName": "Nguyễn Hải"
+    }
+  ],
+  "payments": [
+    {
+      "id": "1",
+      "userId": "1",
+      "semester": "Fall 2025",
+      "courseName": "Web Development",
+      "amount": 3500000,
+      "date": "2025-09-25"
+    },
+    {
+      "id": "3",
+      "userId": "2",
+      "semester": "Fall 2025",
+      "courseName": "Mobile Programming",
+      "amount": 4200000,
+      "date": "2025-10-10"
+    },
+    {
+      "id": "a675",
+      "courseName": ".NET",
+      "semester": "SPRING 2025",
+      "date": "2025-08-14",
+      "amount": 2600000,
+      "userId": "2"
+    },
+    {
+      "courseName": "Java Programming",
+      "semester": "SPRING 2025",
+      "date": "2025-06-05",
+      "amount": 400000,
+      "userId": "2",
+      "id": "67c4"
+    },
+    {
+      "id": "d225",
+      "courseName": "C++ Programming",
+      "semester": "SPRING 2025",
+      "date": "",
+      "amount": 999999,
+      "userId": "1"
+    }
+  ]
+}

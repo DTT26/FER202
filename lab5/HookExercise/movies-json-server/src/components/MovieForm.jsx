@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useAuthState } from '../contexts/AuthContext';
 import { Form, Button, Container, Row, Col, Modal, Image } from 'react-bootstrap';
 import { useMovieState, useMovieDispatch } from '../contexts/MovieContext';
 import { initialMovieState } from '../reducers/movieReducers';
@@ -168,6 +169,7 @@ const MovieForm = () => {
   const state = useMovieState();
   const { dispatch, handleCreateOrUpdate } = useMovieDispatch();
   const { currentMovie, isEditing, showEditModal, genres } = state;
+  const { user } = useAuthState();
   const [imagePreview, setImagePreview] = useState('');
   const [validated, setValidated] = useState(false);
   const [errors, setErrors] = useState({});
@@ -287,19 +289,26 @@ const MovieForm = () => {
 
   return (
     <>
-      <Container className="p-3 mb-4 border">
-        <h3 className="mb-3">📽️ Thêm Phim Mới</h3>
-        <Form noValidate validated={validated} onSubmit={handleSubmit}>
-          <MovieFields {...createFormProps} />
-          <div className="d-flex gap-2 mt-3">
-            <Button variant="success" type="submit">
-              ➕ Thêm Phim
-            </Button>
-          </div>
-        </Form>
-      </Container>
+      {user?.role === 'admin' ? (
+        <Container className="p-3 mb-4 border">
+          <h3 className="mb-3">📽️ Thêm Phim Mới</h3>
+          <Form noValidate validated={validated} onSubmit={handleSubmit}>
+            <MovieFields {...createFormProps} />
+            <div className="d-flex gap-2 mt-3">
+              <Button variant="success" type="submit">
+                ➕ Thêm Phim
+              </Button>
+            </div>
+          </Form>
+        </Container>
+      ) : (
+        <Container className="p-3 mb-4 border bg-light text-center">
+          <h5 className="mb-0">Bạn đang ở chế độ đọc — không có quyền Thêm/Sửa/Xóa</h5>
+          <small className="text-muted">Đăng nhập bằng tài khoản admin để có đầy đủ chức năng</small>
+        </Container>
+      )}
 
-      <Modal show={showEditModal} onHide={handleCloseEditModal} size="lg">
+  <Modal show={showEditModal && user?.role === 'admin'} onHide={handleCloseEditModal} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Chỉnh sửa Phim ID: {isEditing}</Modal.Title>
         </Modal.Header>

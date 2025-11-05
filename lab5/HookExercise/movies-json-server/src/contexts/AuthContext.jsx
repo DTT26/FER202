@@ -96,7 +96,10 @@ export const AuthProvider = ({ children }) => {
       if (Array.isArray(accounts)) {
         const found = accounts.find(acc => String(acc.username) === u && String(acc.password) === p);
         if (found) {
-          dispatch({ type: 'LOGIN_SUCCESS', payload: found });
+          // Normalize role: prefer role from server, otherwise infer from username
+          const role = found.role || (String(found.username).toLowerCase() === 'admin' ? 'admin' : 'student');
+          const userPayload = { ...found, role };
+          dispatch({ type: 'LOGIN_SUCCESS', payload: userPayload });
           return true;
         }
         dispatch({ type: 'LOGIN_ERROR', payload: 'Sai tài khoản hoặc mật khẩu!' });
