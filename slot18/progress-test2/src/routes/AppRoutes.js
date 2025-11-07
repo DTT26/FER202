@@ -5,6 +5,7 @@ import LoginPage from '../pages/LoginPage';
 import DashboardPage from '../pages/DashboardPage';
 import AddPayment from '../pages/AddPayment';
 import ViewPayment from '../pages/ViewPayment';
+import UserList from '../pages/UserList';
 
 const PrivateRoute = ({ children }) => {
     const { isAuthenticated } = useAuth();
@@ -21,6 +22,7 @@ const AppRoutes = () => {
                 <Route path="/payments/add" element={<PrivateRoute><AddPayment /></PrivateRoute>} />
                 <Route path="/payments/:id" element={<PrivateRoute><ViewPayment /></PrivateRoute>} />
                 <Route path="/payments/:id/edit" element={<PrivateRoute><AddPayment /></PrivateRoute>} />
+                <Route path="/users" element={<PrivateRoute><UserList /></PrivateRoute>} />
                 <Route path="*" element={<Navigate to="/home" replace />} />
             </Routes>
         </Router>

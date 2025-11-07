@@ -101,7 +101,7 @@ const FilterBar = ({ onFilter }) => {
                                                 applyFilters({ search: '', semester: '', course: '', sort: '' });
                                             }}
                                         >
-                                            Clear
+                                            Reset
                                         </Button>
                                     </div>
                                 </Form.Group>
